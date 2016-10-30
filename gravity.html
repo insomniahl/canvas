@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟重力</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background:#000;">
+    your browser not support canvas
+</canvas>
+<script src="js/ball.js"></script>
+<script src="js/utils.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+
+        var ball = new Ball(20, 'red');
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2 - 200;
+
+        var vy = 0, gravity = 0.2, bounce = -0.8;
+
+        //碰撞检测
+        function checkGround(ball) {
+            if (ball.y + ball.radius > canvas.height) {
+                ball.y = canvas.height - ball.radius;
+                //速度反向并且减小
+                vy *= bounce;
+            }
+        }
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            vy += gravity;
+            ball.y += vy;
+
+            checkGround(ball);
+            ball.draw(context);
+        }());
+    }
+</script>
+</body>
+</html>
