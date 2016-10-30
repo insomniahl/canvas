@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>箭头旋转</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background: #ccc;">
+    you browser not support canvas!
+</canvas>
+<script src="js/utils.js"></script>
+<script src="js/arrow.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
+
+        var mouse = utils.captureMouse(canvas);
+
+        var arrow = new Arrow();
+        arrow.x = centerX;
+        arrow.y = centerY;
+
+        //动画循环
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            //清除整个画布
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var dx = mouse.x - arrow.x,
+                    dy = mouse.y - arrow.y;
+            arrow.rotation = Math.atan2(dy, dx);
+            arrow.draw(context);
+        })()
+    }
+</script>
+</body>
+</html>
