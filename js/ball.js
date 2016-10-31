@@ -17,8 +17,8 @@ function Ball(radius, color){
     this.mass = 1;
     this.scaleX = 1;
     this.scaleY = 1;
-    //this.color = utils.parseColor(color);
-    this.color = color;
+    this.color = utils.parseColor(color);
+    //this.color = color;
     this.lineWidth = 1;
 }
 
