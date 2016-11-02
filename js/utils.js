@@ -101,6 +101,11 @@ window.utils.parseColor = function (color, toNumber) {
     }
 };
 
+//判断是否在区域内
+window.utils.containsPoint = function (rect, x, y) {
+    return !(x < rect.x || x > rect.x + rect.width || y < rect.y || y > rect.y + rect.height);
+};
+
 /*
  处理动画(兼容性处理)
  requestAnimationFrame方法

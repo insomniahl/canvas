@@ -1,11 +1,11 @@
 /**
  * Created by insomniahl on 2016/10/30.
  */
-function Ball(radius, color){
-    if(radius === undefined){
+function Ball(radius, color) {
+    if (radius === undefined) {
         radius = 40;
     }
-    if(color === undefined){
+    if (color === undefined) {
         color = "#00ff00";
     }
     this.x = 0;
@@ -22,6 +22,7 @@ function Ball(radius, color){
     this.lineWidth = 1;
 }
 
+//构图
 Ball.prototype.draw = function (context) {
     context.save();
     context.translate(this.x, this.y);
@@ -31,9 +32,19 @@ Ball.prototype.draw = function (context) {
     context.fillStyle = this.color;
     context.strokeStyle = this.color;
     context.beginPath();
-    context.arc(0, 0, this.radius, 0, Math.PI *2, false);
+    context.arc(0, 0, this.radius, 0, Math.PI * 2, false);
     context.closePath();
     context.fill();
     context.stroke();
     context.restore();
+};
+
+//获取坐标(以左上角为基准)与宽高
+Ball.prototype.getBounds = function () {
+    return {
+        x: this.x - this.radius,
+        y: this.y - this.radius,
+        width: this.radius * 2,
+        height: this.radius * 2
+    };
 };
