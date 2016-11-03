@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>带个尾巴追随鼠标</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background: #000;">
+    you browser not support canvas!
+</canvas>
+<script src="js/utils.js"></script>
+<script src="js/ball.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var mouse = utils.captureMouse(canvas);
+
+        var ball = new Ball(20, 'red');
+        var ball_1 = new Ball(10, 'orange');
+        var vx, vx_1, vy, vy_1, easing = 0.05, easing_1 = 0.07;
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            vx = (mouse.x - ball.x) * easing;
+            vy = (mouse.y - ball.y) * easing;
+
+            vx_1 = (ball.x - ball_1.x) * easing_1;
+            vy_1 = (ball.y - ball_1.y) * easing_1;
+
+            ball.x += vx;
+            ball.y += vy;
+
+            ball_1.x += vx_1;
+            ball_1.y += vy_1;
+
+            ball.draw(context);
+            ball_1.draw(context);
+        })()
+    }
+</script>
+</body>
+</html>
