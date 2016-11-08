@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多个弹性球球</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background:#000;">
+    your browser not support canvas
+</canvas>
+<script src="../js/ball.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        var mouse = utils.captureMouse(canvas);
+        var ball = new Ball(20, 'red');
+        var spring = 0.03;
+        var f = 0.9;
+        var handles = [];
+        var numHandles = 3;
+        var movingHandle = null;
+
+        //创建三个球
+        for (var i = 0; i < numHandles; i++) {
+            var handle = new Ball(10, "#0000ff");
+            handle.x = Math.random() * canvas.width;
+            handle.y = Math.random() * canvas.height;
+            handles. push(handle);
+        }
+
+        canvas.addEventListener('mousedown', function (event) {
+            handles.forEach(function (handle) {
+                if (utils.containsPoint(handle.getBounds(), mouse.x, mouse.y)) {
+                    movingHandle = handle;
+                }
+            })
+        }, false);
+
+        canvas.addEventListener('mouseup', function (event) {
+            if (movingHandle) {
+                movingHandle = null;
+            }
+        }, false);
+
+        canvas.addEventListener('mousemove', function (event) {
+            if (movingHandle) {
+                movingHandle.x = mouse.x;
+                movingHandle.y = mouse.y;
+            }
+        }, false);
+
+        //各个球运动速度
+        function applyHandle(handle) {
+            var dx = handle.x - ball.x;
+            var dy = handle.y - ball.y;
+            ball.vx += dx * spring;
+            ball.vy += dy * spring;
+        }
+
+        //画点到小球的线
+        function drawHandle(handle) {
+            context.strokeStyle = "white";
+            context.moveTo(ball.x, ball.y);
+            context.lineTo(handle.x, handle.y);
+            context.stroke();
+            handle.draw(context);
+        }
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            handles.forEach(applyHandle);
+
+            ball.vx *= f;
+            ball.vy *= f;
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            context.beginPath();
+            handles.forEach(drawHandle);
+            context.closePath();
+
+            ball.draw(context);
+
+        }());
+    }
+</script>
+</body>
+</html>
