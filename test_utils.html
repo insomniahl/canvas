@@ -2,34 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>弹簧</title>
+    <title>distance</title>
 </head>
 <body>
-<canvas id="canvas" width="500" height="500" style="background-color: #000;">
+<canvas id="canvas" width="500" height="500" style="background:#000;">
     your browser not support canvas!
 </canvas>
-
-<script type="text/javascript" src="js/utils.js"></script>
-<script type="text/javascript" src="js/ball.js"></script>
+<textarea name="" id="log" cols="30" rows="10"></textarea>
+<script src="js/utils.js"></script>
+<script src="js/ball.js"></script>
 <script>
-    window.onload = function () {
+    window.onload = function(){
         var canvas = document.getElementById('canvas'),
                 context = canvas.getContext('2d'),
-                ball = new Ball(),
-                spring = 0.03,
-                targetX = canvas.width / 2,
-                vx = 0;
-        ball.y = canvas.height / 2;
-        (function drawFrame () {
-            window.requestAnimationFrame(drawFrame, canvas);
+                mouse = utils.captureMouse(canvas),
+                ball_1 = new Ball(20, "#49f"),
+                ball_2 = new Ball(20, "#f00");
+
+
+
+        ball_2.x = canvas.width/2;
+        ball_2.y = canvas.height/2;
+
+
+        ball_1.draw(context);
+        ball_2.draw(context);
+
+        canvas.addEventListener('mousemove',function(e){
             context.clearRect(0, 0, canvas.width, canvas.height);
-            var dx = targetX - ball.x,
-                    ax = dx * spring;
-            vx += ax;
-            ball.x += vx;
-            ball.draw(context);
-        }());
-    };
+            ball_1.x = mouse.x;
+            ball_1.y = mouse.y;
+            var dx = ball_2.x - ball_1.x;
+            var dy = ball_2.y - ball_1.y;
+            var dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 20){
+                log.innerHTML = '碰着了';
+            }else{
+                log.innerHTML = "";
+            }
+            ball_1.draw(context);
+            ball_2.draw(context);
+        },false);
+    }
 </script>
 
 </body>

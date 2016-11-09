@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>碰撞反弹</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background:#000;">
+    your browser not support canvas!
+</canvas>
+<script src="../js/utils.js"></script>
+<script src="../js/ball.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d');
+        var ball = new Ball(20, "red");
+        ball.y = canvas.width / 2;
+        ball.vx = 1;
+
+        var ball_1 = new Ball(20, "orange");
+        ball_1.x = canvas.width;
+        ball_1.y = canvas.height / 2;
+        ball_1.vx = -1;
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            ball.x += ball.vx;
+            ball_1.x += ball_1.vx;
+            var dx = ball_1.x - ball.x;
+            var dy = ball_1.y - ball.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < ball.radius + ball_1.radius) {
+                ball.vx *= -1;
+                ball_1.vx *= -1;
+            }
+            ball.draw(context);
+            ball_1.draw(context);
+        })()
+    }
+</script>
+</body>
+</html>
